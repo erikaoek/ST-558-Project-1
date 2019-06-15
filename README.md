@@ -32,8 +32,7 @@ For reading XML data into R the package `xml2()` can be used. The `xml2()` packa
 install.packages("xml2", repos="http://cran.us.r-project.org")
 library(xml2)
 library(plyr)
-
-
 ```
 
-
+XML2 data test eo
+xml data pull test
