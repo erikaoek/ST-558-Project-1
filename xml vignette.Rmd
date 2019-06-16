@@ -11,7 +11,28 @@ output:
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE)
 ```
 
-# Introduction to XML 
+(eo comments: **15 points** general good programing practices **5 points** headings/table contents/chunk options. I thinks we got it, please delete comments later)  
+
+# Introduction to XML  
+(eo comments: **15 points**, (1)what is xml (2)where xml is used (3)why a good way to store data. please delete comments later)  
+
+(Erkang add: **i think here we may add comparisonof xml/json?** below is my summary feel free to rephrase and combine it with yours:
+
+[(XML) Extensible Markup Language](https://www.geeksforgeeks.org/difference-between-json-and-xml/) is a markup language. The basic building block of an XML document is an element, defined by tags, uses tag structure to represent data items. It supports namespaces but doesn’t supports array.It defines a set of rules for encoding documents in a format that is both human-readable and machine-readable thus it is less readable than JSON. It supports comments and various encoding. The design goals of XML focus on simplicity, generality, and usability across the Internet. (1)  
+
+XML has found wide [application](https://www.ibm.com/support/knowledgecenter/en/ssw_ibm_i_71/rzamj/rzamjintrouses.htm):
+* Allows for creation of interactive webpages  
+* Increases ease of returning useful web search results  
+* Use, store, tramsmit, and display data across various devices  
+* Increased accessability for data exchange across businesses and customers  
+* Expresses metadata in a portable, resuable format (2)  
+
+XML is [a good way to store data](https://searchmicroservices.techtarget.com/definition/XML-Extensible-Markup-Language) because XML data is known as self-describing or self-defining, meaning that the structure of the data is embedded with the data, thus when the data arrives there is no need to pre-build the structure to store the data; it is dynamically understood within the XML. (3)  
+
+[JSON (JavaScript Object Notation)](https://www.geeksforgeeks.org/difference-between-json-and-xml/) is a lightweight data-interchange format and is completely language independent. It is based on the JavaScript programming language to understand and generate. It is a way of representing objects. It doesn’t use end tag. It supports array but doesn’t supports namespaces. Its files are very easy to read as compared to XML. It doesn't supports comments and support only UTF-8 encoding encoding. Both XML and JSON are self-describing and can be parsed and used by lots of programming languages. application and why a good way to store data  etc.)
+
+
+XML (Extensible markup language) was designed to carry data, not to display data. 
 
 Extensible Markup Language (XML) is a means of storing data on the internet so that it can be retrieved by both humans and machines. XML is similar to other [markup languages](https://en.wikipedia.org/wiki/Markup_language) such as HTML, but offers more flexibility and customization. XML lets the user create and define their tags in order to meet their specific needs. "A key difference between HTML and XML is that HTML defines how data looks, while [XML defines what data is."](https://www.makeuseof.com/tag/xml-file-case-wondering/). XML has many practical [uses](https://www.ibm.com/support/knowledgecenter/en/ssw_ibm_i_71/rzamj/rzamjintrouses.htm):
 
@@ -21,34 +42,49 @@ Extensible Markup Language (XML) is a means of storing data on the internet so t
 * Increased accessability for data exchange across businesses and customers  
 * Expresses metadata in a portable, resuable format  
 
-# R Packages for XML Data
+# R Packages/functions for XML Data  
+(eo comments: **10 points**, (1)possible packages/functions (2)reason choose xml(). please delete comments laters)  
 
-For reading XML data into R the package `XML()` can be used. 
+For reading XML data into R the package `XML()` can be used.  
 
-# XML Data Set
+(Erkang add: We can read a xml file in R using the "XML" package written by Duncan Temple Lang, it is available on CRAN-R and is one of the easy way to parse, process and generate XML data with R. There are other packages such as `xml2()` and `xslt()`, some people on GitHub highly recommonded xml2() produced by Hadley Wickham, it has a simpler interface with great simplicity vs power balance and makes everything clean and tidy, but here we applied the traditional xml(). The xml file is read by R using the function **xmlParse()**, it is stored as a list in R. To handle the data effectively in large files we read the data in the xml file as a data frame by using function **xmlToDataFrame()**. Then we can process the data frame for data analysis.  )
 
-The data set pertains to drug poisoning deaths at the U.S. and sate level. The [data set](https://catalog.data.gov/dataset/drug-poisoning-mortality-u-s-and-state-trends-united-states-20022014) was published by the Centers for Disease Control and Prevention.  
+# XML Data Set  
+(eo comments: **15 points**, data(1)find from where (2)how collocted (3)variables. please delete comments later)  
 
+The data set pertains to drug poisoning deaths at the U.S. and sate level. The [data set](https://catalog.data.gov/dataset/drug-poisoning-mortality-u-s-and-state-trends-united-states-20022014) was published by the Centers for Disease Control and Prevention.(1)  
+
+Estimates are collected based on the National Vital Statistics System multiple cause-of-death mortality files. Populations used for computing death rates for census years (2011-2015) are postcensal estimates based on the 2010 U.S. census, while for noncensus years (before 2010) population is revised using updated intercensal population estimates. (2)  
+
+The selected demographic characteristics variables are "year", "sex","age","race_hispanic_origin","state","deaths","population","crude_death_rate","standard_error_for_crude_rate","low_confidence_limit_for_crude_rate","upper_confidence_limit_for_crude_rate","us_crude_rate","us_age_adjusted_rate". (3)  
+
+# (?? eo: what does it mean "read in the data set describing the options your pakcages's functions allow"? do we need to have discussion of this part? my understanding is we just need to read the xml data)  
 
 ```{r read in data, include=FALSE}
-
+# Install and load the package required to read XML files.(eo)
 install.packages("XML", repos="http://cran.us.r-project.org")
 library(XML)
 
 #bring in xml data 
 drugData <- xmlParse("http://data.cdc.gov/api/views/jx6g-fdh6/rows.xml?accessType=DOWNLOAD")
 
-#make into data frame
+#Convert the input xml file to a data frame.
 drugDataFrame<-xmlToDataFrame(nodes=getNodeSet(drugData,"//response/row/row"))[c("year", "sex","age","race_hispanic_origin","state","deaths","population","crude_death_rate","standard_error_for_crude_rate","low_confidence_limit_for_crude_rate","upper_confidence_limit_for_crude_rate","us_crude_rate","us_age_adjusted_rate")]
 
 #make columns appropriate objects
 drugDataFrame<-transform(drugDataFrame, year=as.numeric(year), deaths=as.numeric(deaths), population=as.numeric(population), crude_death_rate=as.numeric(crude_death_rate))
 str(drugDataFrame)
+
+#Convert the data frame to tibble (eo, or we can just delete it)
+library(tidyverse)
+drugDataTbl <- tbl_df(drugDataFrame)
+str(drugDataTbl)
 ```
 
-# Data Exploration
+# Exploratory Data Analysis  
+(eo comments: **40 points**, 10 points for create functions(done), 5 points for creat new variables(done), 25 points for numeric&graphic summary, contingency table(not yet), side-by-side box plot(done), bar plot(not yet), scatter plot with coloring(I'd prefer scattor plot of death rate vs. year instead of death rate vs. population, the plot is hard to read, or we can re-scale the x/y axis? not yet?))
 
-Data analysis to determine if a difference between sex and drug poisonings exists amongst all ages and all races. 
+(1) Data analysis to determine if a difference between sex and drug poisonings exists amongst all ages and all races. (eo: conclusion: For all ages races, females has lower drup poisoning crude death rate than males  )  
 
 ```{r create new variable}
 library(knitr)
@@ -60,32 +96,76 @@ females<-drugDataFrame %>% select( year,sex,age,race_hispanic_origin,deaths,popu
 #subset data (males)
 males<-drugDataFrame %>% select( year,sex,age,race_hispanic_origin,deaths,population,crude_death_rate) %>% filter(race_hispanic_origin=="All Races-All Origins")%>% filter(sex=="Male") %>% filter(age=="All Ages") %>% arrange(year) 
 
-#combine females and males into new data frame with desired data
-allSexes<-cbind(females,males)
+#(eo: left join females and males table instead of too many columns)
+names(females)[5]<-"female death"
+names(males)[5]<-"male death"
+names(females)[6]<-"female population"
+names(males)[6]<-"male population"
+names(females)[7]<-"female crude death rate"
+names(males)[7]<-"male crude death rate"
+names(females)[4]<-"race/hispanic origin"
+names(males)[4]<-"race/hispanic origin"
 
-#rename columns
-names(allSexes)[7]<-"female crude death rate"
-names(allSexes)[14]<-"male crude death rate"
-names(allSexes)[4]<-"race/hispanic origin"
-names(allSexes)[4]<-"race/hispanic origin"
+combineFM <- dplyr::left_join(females, males, by = c("year", "age", "race/hispanic origin"))
+names(combineFM)[2]<-"sex female"
+names(combineFM)[8]<-"sex male"
+
+combineFM <- select(combineFM, year, "sex female", "female death", "female population", "female crude death rate", "sex male", "male death", "male population", "male crude death rate")
 
 #create new variable 
-allSexes$`difference in female vs male crude death rate`<-allSexes$`female crude death rate`-allSexes$`male crude death rate`
+combineFM$"crude death rate (female - male)" <- combineFM$"female crude death rate" - combineFM$"male crude death rate"
 
+# creat interactive table
 library(DT)
-datatable(allSexes, rownames=FALSE,caption="Drug Poisioning Deaths Females vs Males for All Ages and All Races")
+datatable(combineFM, rownames=FALSE,caption="Females vs Males Drug Poisioning Deaths rate of All Ages and All Races")
+
+
+#(eo: too many columns)#combine females and males into new data frame with desired data
+# allSexes<-cbind(females,males)
+
+#rename columns
+# names(allSexes)[7]<-"female crude death rate"
+# names(allSexes)[14]<-"male crude death rate"
+# names(allSexes)[4]<-"race/hispanic origin"
+# names(allSexes)[4]<-"race/hispanic origin"
+
+#create new variable 
+# allSexes$`difference in female vs male crude death rate`<-allSexes$`female crude death rate`-allSexes$`male crude death rate`
+
+# library(DT)
+# datatable(allSexes, rownames=FALSE,caption="Drug Poisioning Deaths Females vs Males for All Ages and All Races")
 
 ```
 
-```{r bar plot}
+```{r box plot}
 
 library(ggplot2)
 
 #boxplot female vs male crude death rate
-ggplot(drugDataFrame %>% filter(sex=="Female" | sex=="Male"), aes(x=sex, y=crude_death_rate)) + geom_boxplot() + ggtitle("Boxplot for Crude Death") +ylab("Crude Death Rate") +xlab("Sex")
+ggplot(drugDataFrame %>% filter(sex=="Female" | sex=="Male"), aes(x=sex, y=crude_death_rate)) + geom_boxplot() + ggtitle("Females vs Males Drug Poisioning Deaths rate of All Ages and All Races") +ylab("Crude Death Rate") +xlab("Sex")
 
 ```
 
+(2) Data analysis to determine if a difference between sex, age distribution and drug poisonings exists amongst all races. barplot need counts not rate. not yet finished.
+
+```{r contingency table}
+
+#contingency table of crude_death_rate grouped by age and sex
+table1 <-drugDataFrame %>% filter(race_hispanic_origin=="All Races-All Origins", sex==c("Female", "Male")) %>% select(year,sex,age,crude_death_rate) %>% arrange(sex, age, year) 
+
+#contingency table of average crude_death_rate grouped by age and sex
+table2 <- table1 %>% group_by(sex, age) %>% summarise(aveDeathRate = mean(crude_death_rate))
+
+```
+
+```{r barplot}
+#deaths vs population scatterplot
+
+ggplot(table2, aes(x = age)) + geom_bar(aes(fill = sex), position = "dodge") + xlab("age distribution") + scale_fill_discrete(name = "")
+
+```
+
+(3) ?? not yet finished.
 ```{r scatterplot, fig.height=15, fig.width=1}
 #deaths vs population scatterplot
 
