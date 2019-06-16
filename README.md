@@ -11,6 +11,15 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE)
 ```
+Erkang Ou comments: Hi all, I directly update xml.rmd file and push it to our GitHub Repository, I didn't change/delete Melissa's previous codes, only add lines with eo comments. 
+
+1. Under each header, I wrote the detailed rubric for grading so we can check step by step if we miss any parts.
+
+2. I think we've complete #introduction to xml, #R Packages/functions for XML Data, and #XML Data Set these three part, Melissa feel free to combine our writing. I'm not 100% sure if I have correct answer for the question "how the data was collected", and if you want to add more discussion to description of data set please go ahead.
+
+3. We still need to polish the # Exploratory Data Analysis part. I had a contingency table but I think stricktly speaking contingency table displays the frequency distribution of the variables, as well as the barplot. for our example, the categorical variables are all demographic characteristics, I'm still working on how to make a meaningfull contingency table and bar plot. 
+
+
 
 # Introduction to XML 
 
